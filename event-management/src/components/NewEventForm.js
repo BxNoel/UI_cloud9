@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const EVENTBRITE_API_URL = "https://www.eventbriteapi.com/v3";
-const EVENTBRITE_API_KEY = "MP37FMULBZHY7OXFBGMQ"; // Replace with your actual API key
-const ORGANIZATION_ID = "2538353371891";
 
-const EventForm = () => {
+const EventForm = ({ accessToken, organizationId }) => {
   const [newEventName, setNewEventName] = useState("");
   const [newEventStartDate, setNewEventStartDate] = useState("");
   const [newEventStartTime, setNewEventStartTime] = useState("");
@@ -13,14 +11,15 @@ const EventForm = () => {
   const [newEventEndTime, setNewEventEndTime] = useState("");
   const [error, setError] = useState(null);
 
+  // Function to create an event
   const createEvent = async (e) => {
     e.preventDefault();
     try {
       console.log(
-        `${EVENTBRITE_API_URL}/organizations/${ORGANIZATION_ID}/events/`
+        `${EVENTBRITE_API_URL}/organizations/${organizationId}/events/`
       );
       const eventbriteResponse = await axios.post(
-        `${EVENTBRITE_API_URL}/organizations/${ORGANIZATION_ID}/events/`,
+        `${EVENTBRITE_API_URL}/organizations/${organizationId}/events/`,
         {
           event: {
             name: { html: newEventName },
@@ -37,7 +36,7 @@ const EventForm = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${EVENTBRITE_API_KEY}`,
+            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
         }
